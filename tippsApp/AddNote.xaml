@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="tippsApp.AddNote"
+             Title="AddNote"
+             BackgroundColor="Black"
+             Shell.TabBarIsVisible="False"
+             >
+    <VerticalStackLayout>
+
+        <ScrollView >
+            <StackLayout>
+
+                <Button
+     Text="Back"
+     TextColor="White"
+     FontSize="20"
+     Margin="-330,10,0,0"
+     BackgroundColor="Black"
+     HeightRequest="50"
+     WidthRequest="90"
+     Clicked="goBack"
+        />
+                <Button x:Name="saveButton"
+BorderWidth="2"
+BackgroundColor="Black"
+Text="Save"
+FontSize="20"
+Padding="0,0,0,0"
+Margin="330,-47,0,0"
+Clicked="saveNote"
+Command="{Binding AddNewCommand}" 
+
+/>
+
+
+                <Editor  x:Name="noteName"  Text="{Binding name}"  WidthRequest="400" MaximumHeightRequest="1000"
+    
+TextColor="White"
+BackgroundColor="Black"
+FontSize="50"
+Margin="10,30,0,0"
+Style="{StaticResource Headline}"
+
+SemanticProperties.HeadingLevel="Level1"
+
+/>
+
+                <Editor  x:Name="noteContent"  Text="{Binding content}" Margin="10,40,0,0"
+    
+    TextColor="Gray"
+    FontSize="25"
+    Style="{StaticResource SubHeadline}"                    
+    BackgroundColor="Black"
+    HorizontalOptions="StartAndExpand"
+    WidthRequest="400"
+    SemanticProperties.HeadingLevel="Level2"
+    SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
+            </StackLayout>
+        </ScrollView>
+        
+
+    </VerticalStackLayout>
+</ContentPage>
