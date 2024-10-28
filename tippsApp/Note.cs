@@ -8,9 +8,9 @@ namespace tippsApp
 {
     public class Note
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string content { get; set; }
+        public string Content { get; set; }
 
         
     }

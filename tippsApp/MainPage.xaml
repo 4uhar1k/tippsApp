@@ -4,7 +4,7 @@
              x:Class="tippsApp.MainPage"
              BackgroundColor="White"
              NavigationPage.HasNavigationBar="False"
-             
+             BindingContext="{StaticResource sharedViewModel}"
              Shell.TabBarIsVisible="True"
              >
              
@@ -20,11 +20,11 @@
         <Label Text="Your Notes" TextColor="Black" FontSize="50" Margin="-10,20,0,0">
 
         </Label>
-        <CollectionView x:Name="notesCollection" ItemsSource="{Binding notes}" HeightRequest="525"  SelectionMode="Single"
-                        SelectionChangedCommand="{Binding DelNoteCommand}"
+        <CollectionView x:Name="notesCollection" ItemsSource="{Binding notes}" HeightRequest="525"  SelectionMode="Single" SelectionChanged="showNote"
+            SelectionChangedCommand="{Binding EditNoteCommand}"
                         
-                        SelectionChangedCommandParameter="{Binding Source={x:Reference Name=notesCollection}, Path=SelectedItem}"
-                        >
+                        SelectionChangedCommandParameter="{Binding Source={x:Reference Name=notesCollection}, Path=SelectedItem}">
+                        
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border Stroke="Black" StrokeThickness="2" StrokeShape="RoundRectangle 10" >
@@ -34,8 +34,8 @@
                                     <RowDefinition Height="1*"/>
                                     <RowDefinition Height="1*"/>
                                 </Grid.RowDefinitions>
-                                <Label Text="{Binding name}" FontSize="40" TextColor="Black"/>
-                                <Label Text="{Binding content}" FontSize="20" Margin="0,60,0,0" TextColor="Gray"/>
+                                <Label Text="{Binding Name}" FontSize="40" TextColor="Black"/>
+                                <Label Text="{Binding Content}" FontSize="20" Margin="0,60,0,0" TextColor="Gray"/>
                             </Grid>
                         </StackLayout>
                     </Border>

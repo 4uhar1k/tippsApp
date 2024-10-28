@@ -11,25 +11,116 @@ using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
 
+
 namespace tippsApp;
-public class NoteViewModel : INotifyPropertyChanged
+
+public class ShowNoteViewModel : INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public Note selectedNote;
+
+    public ShowNoteViewModel(Note note) => this.selectedNote = note;
+
+    public string Name
+    {
+        get => selectedNote.Name;
+        set
+        {
+            if (selectedNote.Name != value)
+            {
+                selectedNote.Name = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string Content
+    {
+        get => selectedNote.Content;
+        set
+        {
+            if (selectedNote.Content != value)
+            {
+                selectedNote.Content = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public void OnPropertyChanged([CallerMemberName] string prop = "")
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+    }
+}
+
+public class EditNoteViewModel: INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler? PropertyChanged;
+    string name;
+    string content;
+    public string Name
+    {
+        get => name;
+        set
+        {
+            if (name != value)
+            {
+                name = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public string Content
+    {
+        get => content;
+        set
+        {
+            if (content != value)
+            {
+                content = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public void OnPropertyChanged([CallerMemberName] string prop = "")
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+    }
+}
+
+public class NoteViewModel
 {
     
-    public event PropertyChangedEventHandler? PropertyChanged;
+    
 
     //
     public Note note = new Note();
     //List<Note> notes = new List<Note>();
+    string name, content;
     public ObservableCollection<Note> notes { get; set; }
     public ICommand AddNewCommand { get; set; }
+    public ICommand EditNoteCommand { get; set; }
     public ICommand AddOldCommand { get; set; }
     public ICommand DelOldCommand { get; set; }
     public ICommand DelNoteCommand { get; set; }
     public ICommand disableDelCommand { get; set; }
     public bool isOld = false;
 
+    //public event PropertyChangedEventHandler? PropertyChanged;
+
+    public ShowNoteViewModel noteToSave {  get; set; }
+    public EditNoteViewModel noteToEdit { get; set; }
+    public EditNoteViewModel editableNote { get; set; }
+
     public NoteViewModel()
     {
+        noteToSave = new ShowNoteViewModel(new Note() { });
+        noteToEdit = new EditNoteViewModel();
+        editableNote = new EditNoteViewModel();
+        
         string fileName = Path.Combine(FileSystem.AppDataDirectory, "notes.txt");
         notes = new ObservableCollection<Note>();
         
@@ -44,8 +135,8 @@ public class NoteViewModel : INotifyPropertyChanged
             while ((line = sr.ReadLine()) != null)
             {
                 Note fileNote = new Note();
-                fileNote.name = line;
-                fileNote.content = sr.ReadLine();
+                fileNote.Name = line;
+                fileNote.Content = sr.ReadLine();
                 notes.Add(fileNote);
                 
             }
@@ -54,56 +145,51 @@ public class NoteViewModel : INotifyPropertyChanged
 
         AddNewCommand = new Command(() =>
         {
-            if (name!="" | content!="")
+            
+            if (noteToEdit.Name != "" | noteToEdit.Content != "")
             {
+                noteToSave.Name = noteToEdit.Name;
+                noteToSave.Content = noteToEdit.Content;
+                try
+                {
+                    Note oldNote = new Note(){ Name = editableNote.Name, Content= editableNote.Content};
+                    notes.Remove(oldNote);
+                }
+                catch
+                {
+
+                }
                 using (StreamWriter sw = new StreamWriter(fileName, true))
                 {
-                    sw.WriteLine(name);
-                    sw.WriteLine(content);
-                    Note newnote = new Note { name = name, content = content };
+                    sw.WriteLine(noteToSave.Name);
+                    sw.WriteLine(noteToSave.Content);
+                    Note newnote = new Note { Name = noteToSave.Name, Content = noteToSave.Content };
                     notes.Add(newnote);
                     this.notes = notes;
                     sw.Close();
                 }
             }
             
+            
+            
+            
             //new NoteViewModel();
         }, () => name != "" || content != "");
-        AddOldCommand = new Command((object args) =>
+
+        EditNoteCommand = new Command((object args) =>
         {
-            /*Note selectedNote = new Note();
+            Note selectedNote = new Note();
             selectedNote = (Note)args;
             if (args is Note)
             {
-
-                notes.Remove(selectedNote);
-                notes.Add(new Note() { name = name, content = content });
-                using (StreamWriter sw = new StreamWriter(fileName, false))
-                {
-                    foreach (Note note in notes)
-                    {
-                        sw.WriteLine(note.name);
-                        sw.WriteLine(note.content);
-                    }
-                    sw.Close();
-                }
-            }*/
+                noteToEdit.Name = selectedNote.Name;
+                noteToEdit.Content = selectedNote.Content;
+                editableNote.Name = noteToEdit.Name;
+                editableNote.Content = noteToEdit.Content;
+                //this.noteToEdit = editableNote;
+            }
         });
-        DelOldCommand = new Command(() =>
-        {
-        /*Note foundNote = new Note();
-        foundNote = notes.Find(n => n.name == name && n.content == content);
-        notes.Remove(foundNote);
-            using (StreamWriter sw = new StreamWriter(fileName, false))
-            {
-                foreach (Note note in notes)
-                {
-                    sw.WriteLine(note.name);
-                    sw.WriteLine(note.content);
-                }
-                sw.Close();
-            }*/
-        });
+        
 
         DelNoteCommand = new Command((object args) =>
         {
@@ -117,8 +203,8 @@ public class NoteViewModel : INotifyPropertyChanged
                 {
                     foreach (Note note in notes)
                     {
-                        sw.WriteLine(note.name);
-                        sw.WriteLine(note.content);
+                        sw.WriteLine(note.Name);
+                        sw.WriteLine(note.Content);
                     }
                     sw.Close();
                 }
@@ -128,29 +214,20 @@ public class NoteViewModel : INotifyPropertyChanged
         disableDelCommand = new Command(() =>
 
         {
-            ((Command)DelNoteCommand).ChangeCanExecute();
-            OnPropertyChanged();
-        });
+            ((Command)DelNoteCommand).ChangeCanExecute();        });
     }
 
     public NoteViewModel(Note note)
     {
-        
-        if (isOld == false)
-        {
-            this.note = note;
-            isOld = true;
-        }
-        else
-        {
-            isOld = false;
-        }
-        
-        
+
+
+
+
+
         string fileName = Path.Combine(FileSystem.AppDataDirectory, "notes.txt");
         //ObservableCollection<Note> selnotes = new ObservableCollection<Note>();
         notes = new ObservableCollection<Note>();
-        
+
         //selnotes = this.notes;
         if (!File.Exists(fileName))
         {
@@ -163,53 +240,53 @@ public class NoteViewModel : INotifyPropertyChanged
             while ((line = sr.ReadLine()) != null)
             {
                 Note fileNote = new Note();
-                fileNote.name = line;
-                fileNote.content = sr.ReadLine();
+                fileNote.Name = line;
+                fileNote.Content = sr.ReadLine();
                 notes.Add(fileNote);
             }
             sr.Close();
         }
-        notes.RemoveAt(notes.IndexOf(note));
+        //notes.RemoveAt(notes.IndexOf(note));
+        //noteToSave = new ShowNoteViewModel(note);
+        EditNoteViewModel noteToEditLocal = this.noteToEdit;
         AddNewCommand = new Command(() =>
         {
-
-            string? line;
-
-            /* using (StreamReader sr = new StreamReader(fileName))
-             {
-                 while ((line = sr.ReadLine()) != null)
-                 {
-
-                     if(line==note.name && )
-                     Note fileNote = new Note();
-                     fileNote.name = line;
-                     fileNote.content = sr.ReadLine();
-                     notes.Add(fileNote);
-                 }
-                 sr.Close();
-             }*/
-            //int index = notes.IndexOf(note);
-            //Note note1 = new Note() { name = noteName, content = noteContent };
-            //notes.Remove(this.note);
-            //notes = notes;
-
-            using (StreamWriter sw = new StreamWriter(fileName, false))
+            try
             {
-                
-                //sw.WriteLine(name);
-                //sw.WriteLine(content);
-                Note newnote = new Note { name = name, content = content };
-                notes.Add(newnote);
-                //this.notes = selnotes;
-                foreach (Note listNote in notes)
+                noteToSave.Name = noteToEdit.Name;
+                noteToSave.Content = noteToEdit.Content;
+                using (StreamWriter sw = new StreamWriter(fileName, true))
                 {
-                    sw.WriteLine(listNote.name);
-                    sw.WriteLine(listNote.content);
+                    sw.WriteLine(noteToSave.Name);
+                    sw.WriteLine(noteToSave.Content);
+                    Note newnote = new Note { Name = noteToSave.Name, Content = noteToSave.Content };
+                    notes.Add(newnote);
+                    this.notes = notes;
+                    sw.Close();
                 }
-                sw.Close();
             }
+            catch
+            {
+                if (noteToEdit.Name != "" | noteToEdit.Content != "")
+                {
+                    using (StreamWriter sw = new StreamWriter(fileName, true))
+                    {
+                        sw.WriteLine(noteToEdit.Name);
+                        sw.WriteLine(noteToEdit.Content);
+                        Note newnote = new Note { Name = noteToEdit.Name, Content = noteToEdit.Content };
+                        notes.Add(newnote);
+                        this.notes = notes;
+                        sw.Close();
+                    }
+                }
+            }
+
+
+
             //new NoteViewModel();
-        }, () => name!="" || content!="");
+        }, () => name != "" || content != "");
+
+        
         AddOldCommand = new Command(() =>
         {
             /*Note foundNote = new Note();
@@ -243,9 +320,9 @@ public class NoteViewModel : INotifyPropertyChanged
         });
 
         DelNoteCommand = new Command((object args) =>
-        
+
         {
-            
+
             Note selectedNote = new Note();
             selectedNote = (Note)args;
             if (args is Note)
@@ -256,50 +333,48 @@ public class NoteViewModel : INotifyPropertyChanged
                 {
                     foreach (Note note in notes)
                     {
-                        sw.WriteLine(note.name);
-                        sw.WriteLine(note.content);
+                        sw.WriteLine(note.Name);
+                        sw.WriteLine(note.Content);
                     }
                     sw.Close();
                 }
             }
-        
+
         });
 
-            
-    }
 
-    
-
-    public string name
-    {
-        get => note.name;
-        set
-        {
-            if (note.name != value)
-            {
-                note.name = value;
-                OnPropertyChanged();
-            }
-        }
     }
+    //public string Name
+    //{
+    //    get => name;
+    ////    set
+    ////    {
+    ////        if (name != value)
+    ////        {
+    ////            name = value;
+    ////            OnPropertyChanged();
+    ////        }
+    ////    }
+    ////}
 
-    public string content
-    {
-        get => note.content;
-        set
-        {
-            if (note.content != value)
-            {
-                note.content = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    ////public string Content
+    ////{
+    ////    get => content;
+    //    set
+    //    {
+    //        if (content != value)
+    //        {
+    //            content = value;
+    //            OnPropertyChanged();
+    //        }
+    //    }
+    //}
 
-    public void OnPropertyChanged([CallerMemberName] string prop="")
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        ((Command)AddNewCommand).ChangeCanExecute();
-    }
+    //public void OnPropertyChanged([CallerMemberName] string prop = "")
+    //{
+    //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+    //}
+
+
 }
 

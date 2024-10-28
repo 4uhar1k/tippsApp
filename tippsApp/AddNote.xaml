@@ -5,6 +5,7 @@
              Title="AddNote"
              BackgroundColor="Black"
              Shell.TabBarIsVisible="False"
+             BindingContext="{StaticResource sharedViewModel}"
              >
     <VerticalStackLayout>
 
@@ -34,7 +35,7 @@ Command="{Binding AddNewCommand}"
 />
 
 
-                <Editor  x:Name="noteName"  Text="{Binding name}"  WidthRequest="400" MaximumHeightRequest="1000"
+                <Editor  x:Name="noteName"  Text="{Binding noteToEdit.Name}"  WidthRequest="400" MaximumHeightRequest="1000"
     
 TextColor="White"
 BackgroundColor="Black"
@@ -46,7 +47,7 @@ SemanticProperties.HeadingLevel="Level1"
 
 />
 
-                <Editor  x:Name="noteContent"  Text="{Binding content}" Margin="10,40,0,0"
+                <Editor  x:Name="noteContent"  Text="{Binding noteToEdit.Content}" Margin="10,40,0,0"
     
     TextColor="Gray"
     FontSize="25"

@@ -4,8 +4,8 @@ namespace tippsApp
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
         public  List<Note> noteNames { get; set; }
+        public NoteViewModel viewModel { get; set; }
 
         public string fileName = Path.Combine(FileSystem.AppDataDirectory, "notes.txt");
         public MainPage()
@@ -34,7 +34,8 @@ namespace tippsApp
 
 
             //this.noteNames = noteNames;
-            BindingContext = new NoteViewModel();
+            NoteViewModel viewModel = new NoteViewModel();
+            BindingContext = viewModel;
 
         }
         
@@ -49,7 +50,7 @@ namespace tippsApp
             if (e.CurrentSelection.Count != 0)
             {
                 var selectedNote = (Note)e.CurrentSelection[0];
-                await Navigation.PushAsync(new AddNote(selectedNote.name, selectedNote.content), false);
+                await Navigation.PushAsync(new AddNote(selectedNote.Name, selectedNote.Content), false);
             }
             
         }
