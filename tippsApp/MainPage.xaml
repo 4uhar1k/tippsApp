@@ -4,10 +4,10 @@
              x:Class="tippsApp.MainPage"
              BackgroundColor="White"
              NavigationPage.HasNavigationBar="False"
-             BindingContext="{StaticResource sharedViewModel}"
+             
              Shell.TabBarIsVisible="True"
              >
-             
+
 
     <VerticalStackLayout
             Padding="30,0"
@@ -20,11 +20,11 @@
         <Label Text="Your Notes" TextColor="Black" FontSize="50" Margin="-10,20,0,0">
 
         </Label>
-        <CollectionView x:Name="notesCollection" ItemsSource="{Binding notes}" HeightRequest="525"  SelectionMode="Single" SelectionChanged="showNote"
-            SelectionChangedCommand="{Binding EditNoteCommand}"
+        <CollectionView x:Name="notesCollection" ItemsSource="{Binding Notes}" HeightRequest="525"  SelectionMode="Single" SelectionChanged="showNote"
+            
                         
                         SelectionChangedCommandParameter="{Binding Source={x:Reference Name=notesCollection}, Path=SelectedItem}">
-                        
+
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border Stroke="Black" StrokeThickness="2" StrokeShape="RoundRectangle 10" >
@@ -39,68 +39,12 @@
                             </Grid>
                         </StackLayout>
                     </Border>
-                    
+
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <!--<ListView x:Name="listOfNotes" HeightRequest="550" RowHeight="100" ItemsSource = "{Binding noteNames}" BackgroundColor="Black" ItemSelected="showNote">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <ViewCell.View>
-                            <StackLayout >
-                                
-                            </StackLayout>
-                        </ViewCell.View>
-                    </ViewCell>
-                   
-                    
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
-        <!--<StackLayout>
-                    <Grid Margin="0,20,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0"
-    Text="Hello, World!"
-    TextColor="White"
-    BackgroundColor="Black"
-       
-    FontSize="30"
-    HorizontalOptions="Start"
-    Margin="0,0,0,0"
-    Style="{StaticResource Headline}"
-    SemanticProperties.HeadingLevel="Level1"
 
-    />
-
-
-                        <Label Grid.Row="1"
-Text="Welcome to &#10;.NET Multi-platform App UI"
-TextColor="Gray"
-FontSize="15"
-Style="{StaticResource SubHeadline}"                    
-BackgroundColor="Black"
-HorizontalOptions="StartAndExpand"
-
-SemanticProperties.HeadingLevel="Level2"
-SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
-                    </Grid>
-
-
-                    <Label Text="test" TextColor="White"></Label>
-                </StackLayout>-->
-            <!--</ListView.ItemTemplate>
-
-
-
-
-
-        </ListView>-->
-        <Button
+        <Button x:Name="addButton"
     BorderWidth="2"
     BackgroundColor="DarkViolet"
     WidthRequest="75"
@@ -127,14 +71,14 @@ Text="-"
 FontSize="50"
 Padding="0,-10,0,0"
 Margin="-260,-100,0,0"
-Command="{Binding disableDelCommand}">
+Clicked="deleteNotes">
 
 
         </Button>
     </VerticalStackLayout>
 
 
-    
+
 </ContentPage>
 
 

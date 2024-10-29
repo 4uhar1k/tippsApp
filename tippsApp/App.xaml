@@ -6,7 +6,7 @@
     <Application.Resources>
         
         <ResourceDictionary>
-            <local:NoteViewModel x:Key="sharedViewModel"/>
+            <!--<local:NoteViewModel x:Key="sharedViewModel"/>-->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />

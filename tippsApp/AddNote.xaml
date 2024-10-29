@@ -5,7 +5,7 @@
              Title="AddNote"
              BackgroundColor="Black"
              Shell.TabBarIsVisible="False"
-             BindingContext="{StaticResource sharedViewModel}"
+             
              >
     <VerticalStackLayout>
 

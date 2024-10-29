@@ -6,36 +6,14 @@ namespace tippsApp
     {
         public  List<Note> noteNames { get; set; }
         public NoteViewModel viewModel { get; set; }
+        public MainViewModel thisContext { get; set; }
 
         public string fileName = Path.Combine(FileSystem.AppDataDirectory, "notes.txt");
         public MainPage()
         {
             InitializeComponent();
-            //File.Delete(fileName);
-            /*noteNames = new List<Note>();
-            
-            if (!File.Exists(fileName))
-            {
-                File.Create(fileName);
-            }
-            string? line;
-             
-            using (StreamReader sr = new StreamReader(fileName))
-            {
-                while ((line = sr.ReadLine()) != null)
-                {
-                    Note fileNote = new Note();
-                    fileNote.name = line;
-                    fileNote.content = sr.ReadLine();
-                    noteNames.Add(fileNote);
-                }
-                sr.Close();
-            }*/
-
-
-            //this.noteNames = noteNames;
-            NoteViewModel viewModel = new NoteViewModel();
-            BindingContext = viewModel;
+            thisContext = new MainViewModel();
+            BindingContext = thisContext;
 
         }
         
@@ -57,21 +35,19 @@ namespace tippsApp
 
         private async void deleteNotes(object sender, EventArgs e)
         {
-            //new NoteViewModel().disableDelCommand();
-            //notesCollection.SelectionChangedCommand = 
-            /*notesCollection.SelectionMode = SelectionMode.Multiple;
-            notesCollection.SelectionChangedCommand = null;
-            bool answer = await DisplayAlert("", "Are you sure you want to delete these notes?", "Yes", "No");
-            if (answer)
+            if(addButton.IsVisible == true)
             {
-
+                addButton.IsVisible = false;
+                notesCollection.SelectionChangedCommand = thisContext.RemoveCommand;
+                notesCollection.SelectionChanged -= showNote;
             }
             else
             {
-                notesCollection.SelectionMode = SelectionMode.Single;
-               // notesCollection.SelectionChangedCommand = new Command(showNote);
-            }*/
-            //notesCollection.SelectionChangedCommand = BindingContext.;
+                addButton.IsVisible = true;
+                notesCollection.SelectionChangedCommand = null;
+                notesCollection.SelectionChanged += showNote;
+            }
+            
         }
 
 
