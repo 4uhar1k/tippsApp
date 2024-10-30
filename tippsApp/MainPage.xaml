@@ -7,6 +7,7 @@
              
              Shell.TabBarIsVisible="True"
              >
+    
 
 
     <VerticalStackLayout
@@ -44,7 +45,12 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Button x:Name="addButton"
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="addButton"
     BorderWidth="2"
     BackgroundColor="DarkViolet"
     WidthRequest="75"
@@ -53,13 +59,13 @@
     Text="+"
     FontSize="50"
     Padding="0,0,0,0"
-    Margin="260,0,0,0"
+    Margin="350,0,0,0"
     Clicked="addNote"
     >
 
 
-        </Button>
-        <Button
+            </Button>
+            <Button x:Name="removeBtn"
 BorderWidth="2"
 BackgroundColor="DarkViolet"
 WidthRequest="75"
@@ -70,11 +76,14 @@ Text="-"
             
 FontSize="50"
 Padding="0,-10,0,0"
-Margin="-260,-100,0,0"
+Margin="-100,0,0,0"
 Clicked="deleteNotes">
 
 
-        </Button>
+            </Button>
+        </Grid>
+
+        
     </VerticalStackLayout>
 
 

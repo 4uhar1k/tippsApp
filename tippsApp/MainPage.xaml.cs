@@ -40,6 +40,7 @@ namespace tippsApp
                 addButton.IsVisible = false;
                 notesCollection.SelectionChangedCommand = thisContext.RemoveCommand;
                 notesCollection.SelectionChanged -= showNote;
+               
             }
             else
             {
