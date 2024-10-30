@@ -22,7 +22,7 @@
 
         </Label>
         <CollectionView x:Name="notesCollection" ItemsSource="{Binding Notes}" HeightRequest="525"  SelectionMode="Single" SelectionChanged="showNote"
-            
+                        
                         
                         SelectionChangedCommandParameter="{Binding Source={x:Reference Name=notesCollection}, Path=SelectedItem}">
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using tippsApp.Models;
+using tippsApp.ViewModels;
 namespace tippsApp
 {
     public partial class MainPage : ContentPage
@@ -14,7 +16,6 @@ namespace tippsApp
             InitializeComponent();
             thisContext = new MainViewModel();
             BindingContext = thisContext;
-
         }
         
 
@@ -29,11 +30,10 @@ namespace tippsApp
             {
                 var selectedNote = (Note)e.CurrentSelection[0];
                 await Navigation.PushAsync(new AddNote(selectedNote.Name, selectedNote.Content), false);
-            }
-            
+            }            
         }
 
-        private async void deleteNotes(object sender, EventArgs e)
+        private void deleteNotes(object sender, EventArgs e)
         {
             if(addButton.IsVisible == true)
             {

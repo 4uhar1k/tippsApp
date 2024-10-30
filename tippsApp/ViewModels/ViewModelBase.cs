@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace tippsApp
+namespace tippsApp.ViewModels
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
@@ -48,6 +48,6 @@ namespace tippsApp
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
-        
+
     }
 }

@@ -10,84 +10,19 @@ using System.Security.Cryptography.X509Certificates;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
+using tippsApp.Models;
 
-
-
-namespace tippsApp;
-
-public class ShowNoteViewModel : ViewModelBase
-{
-
-
-    public Note selectedNote;
-
-    public ShowNoteViewModel(Note note) => this.selectedNote = note;
-
-    public string Name
-    {
-        get => selectedNote.Name;
-        set
-        {
-            if (selectedNote.Name != value)
-            {
-                selectedNote.Name = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
-    public string Content
-    {
-        get => selectedNote.Content;
-        set
-        {
-            if (selectedNote.Content != value)
-            {
-                selectedNote.Content = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
-
-}
-
-public class EditNoteViewModel : ViewModelBase
-{
-
-}
-
+namespace tippsApp.ViewModels;
 public class NoteViewModel : ViewModelBase
 {
-
-
-
-
-    public Note note = new Note();
-
-    string name, content;
     public ObservableCollection<Note> Notes { get; set; }
     public ICommand AddNewCommand { get; set; }
-    public ICommand EditNoteCommand { get; set; }
-    public ICommand AddOldCommand { get; set; }
-    public ICommand DelOldCommand { get; set; }
-    public ICommand DelNoteCommand { get; set; }
-    public ICommand disableDelCommand { get; set; }
-    public bool isOld = false;
-
-
-
-    public ShowNoteViewModel noteToSave { get; set; }
-    public EditNoteViewModel noteToEdit { get; set; }
     public Note editableNote { get; set; }
+    public Note noteToSave { get; set; }
 
     public NoteViewModel()
     {
-        noteToSave = new ShowNoteViewModel(new Note() { });
-        noteToEdit = new EditNoteViewModel();
         editableNote = new Note();
-        editableNote.Name = noteToEdit.Name;
-        editableNote.Content = noteToEdit.Content;
         string fileName = Path.Combine(FileSystem.AppDataDirectory, "notes.txt");
         Notes = new ObservableCollection<Note>();
 
@@ -95,6 +30,7 @@ public class NoteViewModel : ViewModelBase
         {
             File.Create(fileName);
         }
+
         string? line;
 
         using (StreamReader sr = new StreamReader(fileName))
@@ -112,12 +48,8 @@ public class NoteViewModel : ViewModelBase
 
         AddNewCommand = new Command(() =>
         {
-
-            if (noteToEdit.Name != "" | noteToEdit.Content != "")
+            if (Name != "" | Content != "")
             {
-                noteToSave.Name = noteToEdit.Name;
-                noteToSave.Content = noteToEdit.Content;
-
                 Note oldNote = new Note();
                 try
                 {
@@ -128,11 +60,7 @@ public class NoteViewModel : ViewModelBase
                 {
 
                 }
-
-                Notes.Insert(0, new Note() { Name = noteToSave.Name, Content = noteToSave.Content });
-
-
-
+                Notes.Insert(0, new Note() { Name = Name, Content = Content });
                 using (StreamWriter sw = new StreamWriter(fileName, false))
                 {
                     foreach (Note note in Notes)
@@ -140,32 +68,9 @@ public class NoteViewModel : ViewModelBase
                         sw.WriteLine(note.Name);
                         sw.WriteLine(note.Content);
                     }
-
-
                 }
             }
-
-
-
-
-
-        }, () => name != "" || content != "");
-
-
-
-
-
+        }, () => Name != "" || Content != "");
     }
-
-
-
-
-
-
-
-
-
-
-
 }
 

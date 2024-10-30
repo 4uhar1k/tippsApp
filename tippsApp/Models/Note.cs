@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace tippsApp
+namespace tippsApp.Models
 {
     public class Note
     {
@@ -12,6 +12,6 @@ namespace tippsApp
 
         public string Content { get; set; }
 
-        
+
     }
 }
