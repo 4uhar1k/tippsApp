@@ -37,6 +37,7 @@
                                 </Grid.RowDefinitions>
                                 <Label Text="{Binding Name}" FontSize="40" TextColor="Black"/>
                                 <Label Text="{Binding Content}" FontSize="20" Margin="0,60,0,0" TextColor="Gray"/>
+                                <Label Text="{Binding ChangedTime}" FontSize="15" Margin="0,90,0,0" TextColor="LightGray"/>
                             </Grid>
                         </StackLayout>
                     </Border>

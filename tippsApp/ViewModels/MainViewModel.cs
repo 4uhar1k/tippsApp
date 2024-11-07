@@ -36,7 +36,7 @@ public class MainViewModel : ViewModelBase
 
                 while ((line = reader.ReadLine()) != null)
                 {
-                    Notes.Add(new Note() { Name = line, Content = reader.ReadLine() });
+                    Notes.Add(new Note() { Name = line, Content = reader.ReadLine(), ChangedTime = reader.ReadLine() });
                 }
 
                 reader.Close();
@@ -57,6 +57,7 @@ public class MainViewModel : ViewModelBase
                     {
                         sw.WriteLine(note.Name);
                         sw.WriteLine(note.Content);
+                        sw.WriteLine(note.ChangedTime);
                     }
                     sw.Close();
                 }

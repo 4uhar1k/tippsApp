@@ -40,6 +40,7 @@ public class NoteViewModel : ViewModelBase
                 Note fileNote = new Note();
                 fileNote.Name = line;
                 fileNote.Content = sr.ReadLine();
+                fileNote.ChangedTime = sr.ReadLine();
                 Notes.Add(fileNote);
 
             }
@@ -48,29 +49,30 @@ public class NoteViewModel : ViewModelBase
 
         AddNewCommand = new Command(() =>
         {
-            if (Name != "" | Content != "")
+            if (Name != "" | Content != "" | ChangedTime!="")
             {
                 Note oldNote = new Note();
                 try
                 {
-                    oldNote = Notes.First(n => n.Name == editableNote.Name && n.Content == editableNote.Content);
+                    oldNote = Notes.First(n => n.Name == editableNote.Name && n.Content == editableNote.Content && n.ChangedTime == editableNote.ChangedTime);
                     Notes.Remove(oldNote);
                 }
                 catch (Exception e)
                 {
 
                 }
-                Notes.Insert(0, new Note() { Name = Name, Content = Content });
+                Notes.Insert(0, new Note() { Name = Name, Content = Content, ChangedTime = DateTime.Now.ToString("g") });
                 using (StreamWriter sw = new StreamWriter(fileName, false))
                 {
                     foreach (Note note in Notes)
                     {
                         sw.WriteLine(note.Name);
                         sw.WriteLine(note.Content);
+                        sw.WriteLine(note.ChangedTime);
                     }
                 }
             }
-        }, () => Name != "" || Content != "");
+        });
     }
 }
 

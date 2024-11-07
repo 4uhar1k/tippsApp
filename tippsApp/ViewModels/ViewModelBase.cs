@@ -12,7 +12,7 @@ namespace tippsApp.ViewModels
     public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
-        string name, content;
+        string name, content, changedtime;
         public ViewModelBase()
         {
 
@@ -39,6 +39,19 @@ namespace tippsApp.ViewModels
                 if (content != value)
                 {
                     content = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string ChangedTime
+        {
+            get => changedtime;
+            set
+            {
+                if (changedtime != value)
+                {
+                    changedtime = value;
                     OnPropertyChanged();
                 }
             }

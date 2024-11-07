@@ -12,6 +12,6 @@ namespace tippsApp.Models
 
         public string Content { get; set; }
 
-
+        public string ChangedTime { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace tippsApp
             if (e.CurrentSelection.Count != 0)
             {
                 var selectedNote = (Note)e.CurrentSelection[0];
-                await Navigation.PushAsync(new AddNote(selectedNote.Name, selectedNote.Content), false);
+                await Navigation.PushAsync(new AddNote(selectedNote), false);
             }            
         }
 

@@ -2,6 +2,7 @@ using Microsoft.Maui.Controls.Shapes;
 using System;
 using System.IO;
 using tippsApp.ViewModels;
+using tippsApp.Models;
 namespace tippsApp;
 
 public partial class AddNote : ContentPage
@@ -16,14 +17,16 @@ public partial class AddNote : ContentPage
         noteName.PlaceholderColor = Colors.White;
     }
 
-    public AddNote(string name, string content)
+    public AddNote(Note note)
     {
         InitializeComponent();
         BindingContext = thisContext;
-        thisContext.Name = name;
-        thisContext.Content = content;
-        thisContext.editableNote.Name = name;
-        thisContext.editableNote.Content = content;  
+        thisContext.Name = note.Name;
+        thisContext.Content = note.Content;
+        thisContext.ChangedTime = note.ChangedTime;
+        thisContext.editableNote.Name = note.Name;
+        thisContext.editableNote.Content = note.Content;
+        thisContext.editableNote.ChangedTime = note.ChangedTime;
     }
 
     public async void goBack(object sender, EventArgs e)
